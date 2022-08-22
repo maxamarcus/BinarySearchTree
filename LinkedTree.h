@@ -31,7 +31,7 @@ protected:
 
 
 
-
+/* All computation happens in node.h. */
 
 template <class t>
 LinkedTree <t> :: LinkedTree() {
