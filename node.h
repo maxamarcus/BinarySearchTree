@@ -16,6 +16,7 @@ struct node {
 
 
 
+
 template <class t>
 void InsertNode(node <t> * & treeRoot, t insertMe) {
     /* Binary search. */
@@ -71,23 +72,33 @@ node <t> * GetAddress(node <t> * treeRoot, t findMe) {
 
 
 
-
-
-
 /* Deleting a tree node is divided into 3 procedures -- find, then delete, then replace if necessary. */
 
-template <class t> void FindAndDelete(node <t> *, t);
+template <class t> void FindAndDelete(node <t> * &, t);
 template <class t> void DeleteNode(node <t> * &);
 template <class t> t GetGreatestValue(node <t> *);
 
 template <class t>
-void FindAndDelete(node <t> * tree, t findMe) {
-    node <t> * deleteAddress = GetAddress(tree, findMe);
+void FindAndDelete(node <t> * & tree, t findMe) {
+    /* Binary search. */
+
     // COND -- findMe is not in tree.
-    if (deleteAddress == nullptr) {
+    if (tree == nullptr) {
         return;
     }
-    DeleteNode(deleteAddress);
+
+    // COND -- found findMe.
+    if (tree->info == findMe) {
+        DeleteNode(tree);
+    }
+
+    // COND -- keep searching.
+    if (findMe < tree->info) {
+        FindAndDelete(tree->left, findMe);
+    }
+    else {
+        FindAndDelete(tree->right, findMe);
+    }
 }
 
 template <class t>
@@ -132,9 +143,6 @@ t GetGreatestValue(node <t> * tree) {
 
 
 
-
-
-// Little functions:
 
 template <class t>
 int CountNodes(node <t> * treeRoot) {
